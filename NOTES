@@ -1,0 +1,16 @@
+
+
+
+
+
+pawn promotion"cheking with promotion
+
+king castling"cheking with castling
+
+enpassant move"
+unique move, idea create a copy of the pawn behind them
+checking with enpassant move"
+
+//STILL HAVENT IMPLEMENTED DOUBLE CHECK MAKING ONLY KING BEING ABLE TO MOVE
+WHEN DOUBLE ATTACK ON KING ONLY KING SHOULD BE ABLE TO MOVE SINCE OTHERS CANT BLOCK TWO PIECES
+
