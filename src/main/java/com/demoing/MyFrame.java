@@ -42,12 +42,12 @@ public class MyFrame extends JFrame{
             for(int i=0;i<8;i++){//BLACK POV
                 for(int j=0;j<8;j++){
                     if((i+j)%2==0){
-                        board[i][j] = new Panel(this,0xFFCF9F,0xF6EA70,i,j);
-                        grid.add(board[i][j]);
+                        board[i][7-j] = new Panel(this,0xFFCF9F,0xF6EA70,i,7-j);
+                        grid.add(board[i][7-j]);
                         //System.out.print("["+(i)+","+j+"]");
                     }else{
-                        board[i][j] = new Panel(this,0xD28C45,0xDDC34C,i,j);
-                        grid.add(board[i][j]);
+                        board[i][7-j] = new Panel(this,0xD28C45,0xDDC34C,i,7-j);
+                        grid.add(board[i][7-j]);
                         //System.out.print("["+(i)+","+j+"]");
                     }
                 }
@@ -67,6 +67,8 @@ public class MyFrame extends JFrame{
 
     //---------------------------------PANEL SELECTED HANDLER--------------------------------
     public void panelSelected(int y, int x){
+        //System.out.println("PANELSELECTED["+y+","+x+"]");
+        //System.out.println(pieces.getPiece(y,x).isMoved());
         if(selected==board[y][x]){
             pieces.clearValidCircles(selectedCord.getY(), selectedCord.getX());
             selected.revert();

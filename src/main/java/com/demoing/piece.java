@@ -12,6 +12,8 @@ public class piece {
     private ImageIcon icon;	//ITS CORRESPONDING IMAGE DEPENDING ON PIECE(if blank,its empty)
     private final JLabel label;	//NEEDED TO ADD TO GRID AS LABEL
 
+    private boolean moved=false;
+
     private coords location;//ITS LOCATION ON pieces[y][x] on Pieces class
 
     //List of all moves (optimistic and wont have out of bounds moves)
@@ -118,7 +120,11 @@ public class piece {
         return this.isCheck;
     }
     public void updateCoords(coords coord){
+        this.moved=true;
         this.location = coord;
+    }
+    public boolean isMoved(){
+        return this.moved;
     }
     public coords getLocation(){
         return this.location;
@@ -199,7 +205,7 @@ public class piece {
     }
     public void setPinnedMoves(ArrayList<coords> list){
         if(Objects.equals(this.name, "none")){
-            System.out.println("returned because its none");
+            //System.out.println("returned because its none");
             return;
         }
         coords coordsOfPinnedBy =list.get(list.size()-1);
@@ -713,6 +719,17 @@ public class piece {
 
     //-----------------------------------Move for Kings----------------------------------
     public void forKings(){
+
+        if(!this.moved && !this.isCheck){//did not move yet
+            if(!pieces.getPiece(this.location.getY(),this.location.getX()+3).isMoved()){
+                //FOR [fromY][fromX+2]
+                moves.add(pieces.getLocation(this.location.getY(),this.location.getX()+2));
+            }
+            if(!pieces.getPiece(this.location.getY(),this.location.getX()-4).isMoved()) {
+                //FOR [fromY][fromX-2]
+                moves.add(pieces.getLocation(this.location.getY(), this.location.getX() - 2));
+            }
+        }
         if(this.location.getY()+1<8 && this.location.getX()+1<8)
             moves.add(pieces.getLocation(this.location.getY()+1,this.location.getX()+1));
         if(this.location.getY()+1<8 && this.location.getX()-1>-1)

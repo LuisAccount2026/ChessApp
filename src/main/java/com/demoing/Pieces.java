@@ -27,6 +27,9 @@ public class Pieces{
     private boolean blackCheck=true;
     private piece whiteKING;
     private piece blackKING;
+    private boolean enPassant=false;
+    private piece enPassantPawn=null;
+    private coords enPassantCords=null;
 
     private static final String WhiteRook = "WhiteRook";
     private static final String WhiteKnight = "WhiteKnight";
@@ -45,6 +48,105 @@ public class Pieces{
     Pieces(MyFrame board,int you, int opponent){
         this.board=board;
         if(opponent==1)turn++;
+
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                //FOR EMPTY TILES------------------------------------------------------
+                if(i>1&&i<6){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(locations[i][j],none);
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                }
+                //FOR WHITE ROOKS----------------------------------------WHITE PIECES
+                if(i==0&&(j==0||j==7)){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(this,locations[i][j],WhiteRook,you,new ImageIcon("src/main/resources/pieces/white-rook.png"));
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                    whitePieces.add(pieces[i][j]);
+                }
+                //FOR WHITE KNIGHTS
+                if(i==0&&(j==1||j==6)){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(locations[i][j],none);
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                }
+                //FOR WHITE BISHOPS
+                if(i==0&&(j==2||j==5)){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(locations[i][j],none);
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                }
+                //FOR WHITE Queen
+                if(i==0&&j==3){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(this,locations[i][j],WhiteQueen,you,new ImageIcon("src/main/resources/pieces/white-queen.png"));
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                    whitePieces.add(pieces[i][j]);
+                }
+                //FOR WHITE King
+                if(i==0&&j==4){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(this,locations[i][j],WhiteKing,you,new ImageIcon("src/main/resources/pieces/white-king.png"));
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                    whiteKING=pieces[i][j];
+                    whitePieces.add(pieces[i][j]);
+                }
+                //FOR WHITE Pawns
+                if(i==1){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(locations[i][j],none);
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                }
+                //FOR BLACK ROOKS--------------------------------------------BLACK PIECES
+                if(i==7&&(j==0||j==7)){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(this,locations[i][j],BlackRook,opponent,new ImageIcon("src/main/resources/pieces/black-rook.png"));
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                    blackPieces.add(pieces[i][j]);
+                }
+                //FOR BLACK KNIGHTS
+                if(i==7&&(j==1||j==6)){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(locations[i][j],none);
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                }
+                //FOR BLACK BISHOPS
+                if(i==7&&(j==2||j==5)){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(locations[i][j],none);
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                }
+                //FOR BLACK Queen
+                if(i==7&&j==3){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(this,locations[i][j],BlackQueen,opponent,new ImageIcon("src/main/resources/pieces/black-queen.png"));
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                    blackPieces.add(pieces[i][j]);
+                }
+                //FOR BLACK King
+                if(i==7&&j==4){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(this,locations[i][j],BlackKing,opponent,new ImageIcon("src/main/resources/pieces/black-king.png"));
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                    blackKING=pieces[i][j];
+                    blackPieces.add(pieces[i][j]);
+                }
+                //FOR BLACK Pawns
+                if(i==6){
+                    locations[i][j]= new coords(i,j);
+                    pieces[i][j]= new piece(locations[i][j],none);
+                    board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
+                }
+
+                //FOR CIRCLES
+                circles[i][j]=new JLabel();
+                circles[i][j].setIcon(new ImageIcon("src/main/resources/pieces/circle.png"));
+                circles[i][j].setVerticalAlignment(JLabel.CENTER);
+                circles[i][j].setHorizontalAlignment(JLabel.CENTER);
+            }
+        }
+
+        /*
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
                 //FOR WHITE ROOKS----------------------------------------WHITE PIECES
@@ -69,14 +171,14 @@ public class Pieces{
                     whitePieces.add(pieces[i][j]);
                 }
                 //FOR WHITE Queen
-                if(i==0&&j==4){
+                if(i==0&&j==3){
                     locations[i][j]= new coords(i,j);
                     pieces[i][j]= new piece(this,locations[i][j],WhiteQueen,you,new ImageIcon("src/main/resources/pieces/white-queen.png"));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     whitePieces.add(pieces[i][j]);
                 }
                 //FOR WHITE King
-                if(i==0&&j==3){
+                if(i==0&&j==4){
                     locations[i][j]= new coords(i,j);
                     pieces[i][j]= new piece(this,locations[i][j],WhiteKing,you,new ImageIcon("src/main/resources/pieces/white-king.png"));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
@@ -112,14 +214,14 @@ public class Pieces{
                     blackPieces.add(pieces[i][j]);
                 }
                 //FOR BLACK Queen
-                if(i==7&&j==4){
+                if(i==7&&j==3){
                     locations[i][j]= new coords(i,j);
                     pieces[i][j]= new piece(this,locations[i][j],BlackQueen,opponent,new ImageIcon("src/main/resources/pieces/black-queen.png"));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     blackPieces.add(pieces[i][j]);
                 }
                 //FOR BLACK King
-                if(i==7&&j==3){
+                if(i==7&&j==4){
                     locations[i][j]= new coords(i,j);
                     pieces[i][j]= new piece(this,locations[i][j],BlackKing,opponent,new ImageIcon("src/main/resources/pieces/black-king.png"));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
@@ -146,6 +248,7 @@ public class Pieces{
                 circles[i][j].setHorizontalAlignment(JLabel.CENTER);
             }
         }
+        */
         updateAll();
         pieces[7][3].updateMoves();
         pieces[0][3].updateMoves();
@@ -283,6 +386,84 @@ public class Pieces{
 
         //CHECK IF TO COORDS ARE IN validMoves ArrayList<coords>
         if(pieces[from.getY()][from.getX()].getValid().contains(to)){
+            //WHITE CASTLE HANDLER
+            if(Objects.equals(pieces[from.getY()][from.getX()].getName(),WhiteKing)||
+                    Objects.equals(pieces[from.getY()][from.getX()].getName(),BlackKing) ){
+                if(to.getY()==from.getY() && to.getX()==from.getX()+2){//right side castling
+                    //MOVE ROOK TO THE LEFT OF THE KING [from.getY()][from.getX()+1]
+                    takePiece(locations[from.getY()][from.getX()+1]);
+                    board.addPieceToBoard(pieces[from.getY()][from.getX()+3].getLabel(),from.getY(),from.getX()+1);
+                    removePieceVision(pieces[from.getY()][from.getX()+3]);
+                    pieces[from.getY()][from.getX()+3].updateCoords(locations[from.getY()][from.getX()+1]);
+                    pieces[from.getY()][from.getX()+1]=pieces[from.getY()][from.getX()+3];
+                    pieces[from.getY()][from.getX()+3]= new piece(locations[from.getY()][from.getX()+1],none);
+                }else if(to.getY()==from.getY() && to.getX()==from.getX()-2) {//left side castling
+                    //MOVE ROOK TO THE RIGHT OF THE KING [from.getY()][from.getX()-1]
+                    takePiece(locations[from.getY()][from.getX()-1]);
+                    board.addPieceToBoard(pieces[from.getY()][from.getX()-4].getLabel(),from.getY(),from.getX()-1);
+                    removePieceVision(pieces[from.getY()][from.getX()-4]);
+                    pieces[from.getY()][from.getX()-4].updateCoords(locations[from.getY()][from.getX()-1]);
+                    pieces[from.getY()][from.getX()-1]=pieces[from.getY()][from.getX()-4];
+                    pieces[from.getY()][from.getX()-4]= new piece(locations[from.getY()][from.getX()-1],none);
+                }
+            }
+
+            if(enPassant){
+                if(Objects.equals(pieces[from.getY()][from.getX()].getName(),WhitePawn)||
+                        Objects.equals(pieces[from.getY()][from.getX()].getName(),BlackPawn)){
+                    if(to==enPassantCords){
+                        takePiece(enPassantPawn.getLocation());
+                        pieces[enPassantPawn.getY()][enPassantPawn.getX()]= new piece(enPassantPawn.getLocation(),none);
+                    }
+                }
+            }
+            //check for moving enpassant
+            if(Objects.equals(pieces[from.getY()][from.getX()].getName(), WhitePawn)){
+                if(to.getY()-from.getY()==2){
+                    enPassant=true;
+                    enPassantPawn=pieces[from.getY()][from.getX()];//piece
+                    enPassantCords=locations[to.getY()-1][to.getX()];//coord from one step below
+                    if(to.getX()-1>-1) {
+                        if (Objects.equals(pieces[to.getY()][to.getX() - 1].getName(), BlackPawn)) {
+                            pieces[to.getY()][to.getX() - 1].updateMoves();
+                        }
+                    }
+                    if(to.getX()+1<8) {
+                        if (Objects.equals(pieces[to.getY()][to.getX() + 1].getName(), BlackPawn)) {
+                            pieces[to.getY()][to.getX() + 1].updateMoves();
+                        }
+                    }
+                }else{
+                    enPassant=false;
+                    enPassantPawn=null;
+                    enPassantCords=null;
+                }
+            }else if(Objects.equals(pieces[from.getY()][from.getX()].getName(), BlackPawn)){
+                if(from.getY()-to.getY()==2){
+                    enPassant=true;
+                    enPassantPawn=pieces[from.getY()][from.getX()];//piece
+                    enPassantCords=locations[to.getY()+1][to.getX()];//coord from one step below
+                    if(to.getX()-1>-1) {
+                        if (Objects.equals(pieces[to.getY()][to.getX() - 1].getName(), WhitePawn)) {
+                            pieces[to.getY()][to.getX() - 1].updateMoves();
+                        }
+                    }
+                    if(to.getX()+1<8) {
+                        if (Objects.equals(pieces[to.getY()][to.getX() + 1].getName(), WhitePawn)) {
+                            pieces[to.getY()][to.getX() + 1].updateMoves();
+                        }
+                    }
+                }else{
+                    enPassant=false;
+                    enPassantPawn=null;
+                    enPassantCords=null;
+                }
+            }else {
+                enPassant=false;
+                enPassantPawn=null;
+                enPassantCords=null;
+            }
+            //EnPassant check ending
             //System.out.println("____________BEGINNING MOVE FUNCTION______________");
 
             //IF VALID MOVE FOUND = GET OUT OF CHECK ELSE IT WOULDNT BE VALID MOVE
@@ -293,12 +474,8 @@ public class Pieces{
             //LOCATION OF VALID MOVES HANDLER (AFTER MOVE)
             clearValidCircles(from.getY(),from.getX());
 
-
-
             //System.out.println("WHITE KING LOCATION:["+whiteKING.getY()+","+whiteKING.getX()+"]");
             //System.out.println("BLACK KING LOCATION:["+blackKING.getY()+","+blackKING.getX()+"]");
-
-
 
             //SAVE MOVED INTO WHITE OR BLACK MOVES ARRAY LIST
             String unique = getUnique(from,to);
@@ -415,9 +592,7 @@ public class Pieces{
         //System.out.println("UPDATING KINGS");
         blackKING.updateMoves();
         whiteKING.updateMoves();
-
         //System.out.println("____________ENDING OF MOVE FUNCTION______________");
-
     }
     //---------------------------------------Move piece -------------------------------------------
 
@@ -542,6 +717,7 @@ public class Pieces{
         for(piece blackPiece : blackPieces){
             blackVision.addAll(blackPiece.getVisionMoves());
         }
+        //System.out.println("blackVISION OF:"+blackVision.size());
         //System.out.println("blackVISION OF:"+blackVision.size());
     }
     //-----------------------------------------WHOLE VISION--------------------------------------------
@@ -780,9 +956,14 @@ public class Pieces{
         }
         //TAKE WITH PAWN TO THE RIGHT-------------------------------------------------
         if((fromX+1)!=8){
+            if(enPassant){
+                if(enPassantCords.getY()==to.getY() && enPassantCords.getX()==to.getX()){
+                    return true;
+                }
+            }
             if(pieces[fromY + 1][fromX + 1].exists() && toY==fromY+1 && toX==fromX+1
                     && 	pieces[fromY][fromX].getNumber()!=pieces[toY][toX].getNumber()){
-                if(Objects.equals(pieces[toY][toX].getName(), WhiteKing)){
+                if(Objects.equals(pieces[toY][toX].getName(), BlackKing)){
                     ArrayList<coords> pinnedList = new ArrayList<>();
                     pinnedList.add(from);
                     inCheck(pinnedList,0); //WHITE CHECKS BLACK
@@ -792,9 +973,14 @@ public class Pieces{
         }
         //TAKE WITH PAWN TO THE LEFT-------------------------------------------------
         if(fromX-1!=-1){
+            if(enPassant){
+                if(enPassantCords.getY()==to.getY() && enPassantCords.getX()==to.getX()){
+                    return true;
+                }
+            }
             if(pieces[fromY + 1][fromX - 1].exists() && toY==fromY+1 && toX==fromX-1
                     && 	pieces[fromY][fromX].getNumber()!=pieces[toY][toX].getNumber()){
-                if(Objects.equals(pieces[toY][toX].getName(), WhiteKing)){
+                if(Objects.equals(pieces[toY][toX].getName(), BlackKing)){
                     ArrayList<coords> pinnedList = new ArrayList<>();
                     pinnedList.add(from);
                     inCheck(pinnedList,0); //WHITE CHECKS BLACK
@@ -826,6 +1012,11 @@ public class Pieces{
         }
         //TAKE WITH PAWN TO THE RIGHT-------------------------------------------------
         if((fromX-1)!=-1){
+            if(enPassant){
+                if(enPassantCords.getY()==to.getY() && enPassantCords.getX()==to.getX()){
+                    return true;
+                }
+            }
             if(pieces[fromY - 1][fromX - 1].exists() && toY==fromY-1 && toX==fromX-1
                     && 	pieces[fromY][fromX].getNumber()!=pieces[toY][toX].getNumber()){
                 if(Objects.equals(pieces[toY][toX].getName(), WhiteKing)){
@@ -838,6 +1029,11 @@ public class Pieces{
         }
         //TAKE WITH PAWN TO THE LEFT-------------------------------------------------
         if(fromX+1!=8){
+            if(enPassant){
+                if(enPassantCords.getY()==to.getY() && enPassantCords.getX()==to.getX()){
+                    return true;
+                }
+            }
             if(pieces[fromY - 1][fromX + 1].exists() && toY==fromY-1 && toX==fromX+1
                     && 	pieces[fromY][fromX].getNumber()!=pieces[toY][toX].getNumber()){
                 if(Objects.equals(pieces[toY][toX].getName(), WhiteKing)){
@@ -1182,6 +1378,49 @@ public class Pieces{
 
     //-----------------------------------Move for Kings----------------------------------
     public boolean forKings(coords from,coords to){
+        if(!pieces[from.getY()][from.getX()].isMoved()){
+            if(from.getY()==to.getY() && to.getX()==from.getX()+2){
+                if(pieces[from.getY()][from.getX()+3].isMoved()){
+                    //System.out.println(pieces[from.getY()][from.getX()].getName()+"forKings return false");
+                    return false;
+                }
+                if(pieces[from.getY()][from.getX()].getNumber()==1){//WHITE
+                    //locations[from.getY()][from.getX()+1] and locations[from.getY()][from.getX()+2]
+                    if(blackVision.contains(locations[from.getY()][from.getX()+1])||
+                            blackVision.contains(locations[from.getY()][from.getX()+2])){
+                        return false;
+                    }
+                }else if(pieces[from.getY()][from.getX()].getNumber()==0) {//BLACK
+                    //locations[from.getY()][from.getX()+1] and locations[from.getY()][from.getX()+2]
+                    if(whiteVision.contains(locations[from.getY()][from.getX()+1])||
+                            whiteVision.contains(locations[from.getY()][from.getX()+2])){
+                        return false;
+                    }
+                }
+                //System.out.println(pieces[from.getY()][from.getX()].getName()+"forKings return true for :"+to.getX());
+                return true;
+            }else if(from.getY()==to.getY() && to.getX()==from.getX()-2){
+                if(pieces[from.getY()][from.getX()-4].isMoved()){
+                    //System.out.println(pieces[from.getY()][from.getX()].getName()+"forKings return false");
+                    return false;
+                }
+                if(pieces[from.getY()][from.getX()].getNumber()==1){//WHITE
+                    //locations[from.getY()][from.getX()-1] and locations[from.getY()][from.getX()-2]
+                    if(blackVision.contains(locations[from.getY()][from.getX()-1])||
+                            blackVision.contains(locations[from.getY()][from.getX()-2])){
+                        return false;
+                    }
+                }if(pieces[from.getY()][from.getX()].getNumber()==0) {//BLACK
+                    //locations[from.getY()][from.getX()+1] and locations[from.getY()][from.getX()+2]
+                    if(whiteVision.contains(locations[from.getY()][from.getX()-1])||
+                            whiteVision.contains(locations[from.getY()][from.getX()-2])){
+                        return false;
+                    }
+                }
+                //System.out.println(pieces[from.getY()][from.getX()].getName()+"forKings return true"+to.getX());
+                return true;
+            }
+        }
         //from is WHITE KING AND TO COORDS ARE IN ENEMY VISION
         //System.out.println("forKings "+to.getY()+","+to.getX());
         if(pieces[from.getY()][from.getX()].getNumber()==1 && blackVision.contains(to)){
@@ -1963,6 +2202,27 @@ public class Pieces{
 
     //-----------------------------------Vision for Kings----------------------------------
     public boolean forKingsVision(coords from,coords to){
+
+        if(!pieces[from.getY()][from.getX()].isMoved()) {//KING HAS NOT MOVED
+            if (to.getY() == from.getY() && to.getX() == 6) {//checking for king side castling
+                if (!pieces[to.getY()][7].isMoved()) {//ROOK HAS NOT MOVED(IF MOVED IT WOULD BE DIFFERENT PIECE )
+                    //CHECK IN BETWEEN[from.getY()][5] and [from.getY()][6]
+                    if (pieces[from.getY()][5].exists() || pieces[from.getY()][6].exists()) {
+                        return false;
+                    }
+                    return true;
+                }
+            } else if (to.getY() == from.getY() && to.getX() == 2) {//checking for Queen side castling
+                if (!pieces[to.getY()][0].isMoved()) {//ROOK HAS NOT MOVED(IF MOVED IT WOULD BE DIFFERENT PIECE )
+                    //CHECK IN BETWEEN[from.getY()][1] ,[from.getY()][2] and [from.getY()][3]
+                    if (pieces[from.getY()][1].exists() || pieces[from.getY()][2].exists() ||
+                            pieces[from.getY()][3].exists()) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
         //BEFORE ANYTHING CHECK ENEMY KINGS MOVES(CANT MOVE INTO ENEMY KINGS MOVES NO MATTER WHAT)
         if(pieces[from.getY()][from.getX()]==whiteKING){
             if(Math.abs(blackKING.getY()-from.getY())<=2 && Math.abs(blackKING.getX()-from.getX())<=2){
@@ -1981,8 +2241,6 @@ public class Pieces{
                 }
             }
         }
-        //if(to.getY()>7||to.getY()<0)return false;
-        //if(to.getX()>7||to.getX()<0)return false;
         //FOR TOP LEFT MOVEMENT---------------------
         if(to.getY()>from.getY() && to.getX()<from.getX()){//Y+1 X-1
             return true;
