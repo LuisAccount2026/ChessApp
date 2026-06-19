@@ -9,9 +9,9 @@ import java.util.Objects;
 
 public class Client {
     private final static String url = "wss://deployment-demo-i37o.onrender.com/ws";
-    private MyLobby lobby;
-    public Client(String input, MyLobby lobby) throws Exception{
-        this.lobby=lobby;
+    private MyMenu menu;
+    public Client(String input, MyMenu menu) throws Exception{
+        this.menu=menu;
         WebSocketClient client = new WebSocketClient(new URI(url)) {
 
             @Override
@@ -23,11 +23,23 @@ public class Client {
 
             @Override
             public void onMessage(String message) {
+                if(Objects.equals(message,"Not your turn")){
+                    System.out.println("NotYOURturn___________");
+                    return;
+                }else if(Objects.equals(message,"Wait for your turn")){
+                    System.out.println("NotYOURturn___________");
+                    return;
+                }
                 System.out.println("OnMessage:"+message);
+                if(message.startsWith("CODE:")){
+                    String code = message.substring(5);
+                    menu.hostConnect(code);
+                }
                 if(Objects.equals(message, "Paired!")){
                     System.out.println("GAME START");
-                    lobby.startGame();
+                    menu.startGame();
                 }
+
             }
 
             @Override

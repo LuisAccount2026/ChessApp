@@ -1,5 +1,7 @@
 package com.demoing;
 
+import com.demoing.clientStuff.Client;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.*;
@@ -14,7 +16,8 @@ public class MyFrame extends JFrame{
     JPanel grid = new JPanel(new GridLayout(8,8));	//[8][8] grid for all the Panel objects
 
     //----------------------------------MyFrame for WHITE/BLACK POV---------------------------
-    MyFrame(int white){
+    public MyFrame(int white){
+        //BUILDER FOR LOCAL
         //FOR IT TO EXIT PROGRAM ON CLOSE
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //SET SIZE AND IT Is NOT GOING TO CHANGE
@@ -35,7 +38,7 @@ public class MyFrame extends JFrame{
                 }
                 //System.out.println();
             }
-            pieces=new Pieces(this,1,0);
+            pieces=new Pieces(this);
         }
         //BLACK HOLDER
         if(white==0){
@@ -53,7 +56,7 @@ public class MyFrame extends JFrame{
                 }
                 //System.out.println();
             }
-            pieces=new Pieces(this,1,0);
+            pieces=new Pieces(this);
         }
         //AFTER CREATING AND ADDING PANELS TO GRID ADD TO FRAME(this)
         this.add(grid);
@@ -63,7 +66,6 @@ public class MyFrame extends JFrame{
         this.revalidate();
     }
     //----------------------------------MyFrame for WHITE/BLACK POV--------------------------
-
 
     //---------------------------------PANEL SELECTED HANDLER--------------------------------
     public void panelSelected(int y, int x){
