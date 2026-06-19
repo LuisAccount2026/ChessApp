@@ -528,7 +528,7 @@ public class Pieces{
                 //reached last square so promote
                 blackPieces.remove(pieces[from.getY()][from.getX()]);
                 board.removePieceFromBoard(pieces[from.getY()][from.getX()].getLabel(),from.getY(),from.getX());
-                pieces[from.getY()][from.getX()]=new piece(this,locations[from.getY()][from.getX()],BlackQueen,number,new ImageIcon("src/main/resources/pieces/white-queen.png"));
+                pieces[from.getY()][from.getX()]=new piece(this,locations[from.getY()][from.getX()],BlackQueen,number,new ImageIcon("src/main/resources/pieces/black-queen.png"));
                 blackPieces.add(pieces[from.getY()][from.getX()]);
             }
 
