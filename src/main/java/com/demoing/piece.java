@@ -62,7 +62,7 @@ public class piece {
         return name;
     }
     public int getNumber(){
-        return number;
+        return this.number;
     }
     public int getSizeValid(){
         return validMoves.size();

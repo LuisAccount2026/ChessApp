@@ -67,8 +67,8 @@ public class MyFrame extends JFrame{
 
     //---------------------------------PANEL SELECTED HANDLER--------------------------------
     public void panelSelected(int y, int x){
-        //System.out.println("PANELSELECTED["+y+","+x+"]");
-        //System.out.println(pieces.getPiece(y,x).isMoved());
+        System.out.println("PANELSELECTED["+y+","+x+"]");
+        System.out.println(pieces.getPiece(y,x).getName());
         if(selected==board[y][x]){
             pieces.clearValidCircles(selectedCord.getY(), selectedCord.getX());
             selected.revert();

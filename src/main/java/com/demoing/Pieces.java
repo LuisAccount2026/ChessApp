@@ -23,8 +23,8 @@ public class Pieces{
     private final ArrayList<coords> whiteValidMoves= new ArrayList<>();
     private final ArrayList<coords> blackValidMoves= new ArrayList<>();
     //KINGS LOCATIONS
-    private boolean whiteCheck=true;
-    private boolean blackCheck=true;
+    private boolean whiteCheck=false;
+    private boolean blackCheck=false;
     private piece whiteKING;
     private piece blackKING;
     private boolean enPassant=false;
@@ -44,11 +44,14 @@ public class Pieces{
     private static final String BlackKing = "BlackKing";
     private static final String BlackPawn = "BlackPawn";
     private static final String none = "none";
+
+    private int you;
     //--------------------------------------set pieces ----------------------------------------
     Pieces(MyFrame board,int you, int opponent){
+        this.you=you;
         this.board=board;
         if(opponent==1)turn++;
-
+/*
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
                 //FOR EMPTY TILES------------------------------------------------------
@@ -144,9 +147,9 @@ public class Pieces{
                 circles[i][j].setVerticalAlignment(JLabel.CENTER);
                 circles[i][j].setHorizontalAlignment(JLabel.CENTER);
             }
-        }
+        }*/
 
-        /*
+
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
                 //FOR WHITE ROOKS----------------------------------------WHITE PIECES
@@ -248,7 +251,7 @@ public class Pieces{
                 circles[i][j].setHorizontalAlignment(JLabel.CENTER);
             }
         }
-        */
+
         updateAll();
         pieces[7][3].updateMoves();
         pieces[0][3].updateMoves();
@@ -305,7 +308,6 @@ public class Pieces{
             board.addPieceToBoard(circles[circle.getY()][circle.getX()],circle.getY(),circle.getX());
         }
     }
-
     public void clearValidCircles(int y,int x){
         //System.out.println("REMOVING CIRCLES! from ["+y+","+x+"]");
         for(coords circle : pieces[y][x].getValid()){
@@ -386,6 +388,10 @@ public class Pieces{
 
         //CHECK IF TO COORDS ARE IN validMoves ArrayList<coords>
         if(pieces[from.getY()][from.getX()].getValid().contains(to)){
+
+
+            whiteCheck=false;
+            blackCheck=false;
             //WHITE CASTLE HANDLER
             if(Objects.equals(pieces[from.getY()][from.getX()].getName(),WhiteKing)||
                     Objects.equals(pieces[from.getY()][from.getX()].getName(),BlackKing) ){
@@ -509,6 +515,23 @@ public class Pieces{
             }
             //HANDLER FOR HIGHLIGHED MOVE (LAST MOVES TOO)
 
+            //PROMOTION HANDLER
+            if(Objects.equals(pieces[from.getY()][from.getX()].getName(), WhitePawn) && to.getY()==7){
+                int number = pieces[from.getY()][from.getX()].getNumber();
+                //reached last square so promote
+                whitePieces.remove(pieces[from.getY()][from.getX()]);
+                board.removePieceFromBoard(pieces[from.getY()][from.getX()].getLabel(),from.getY(),from.getX());
+                pieces[from.getY()][from.getX()]=new piece(this,locations[from.getY()][from.getX()],WhiteQueen,number,new ImageIcon("src/main/resources/pieces/white-queen.png"));
+                whitePieces.add(pieces[from.getY()][from.getX()]);
+            }else if(Objects.equals(pieces[from.getY()][from.getX()].getName(), BlackPawn) && to.getY()==0){
+                int number = pieces[from.getY()][from.getX()].getNumber();
+                //reached last square so promote
+                blackPieces.remove(pieces[from.getY()][from.getX()]);
+                board.removePieceFromBoard(pieces[from.getY()][from.getX()].getLabel(),from.getY(),from.getX());
+                pieces[from.getY()][from.getX()]=new piece(this,locations[from.getY()][from.getX()],BlackQueen,number,new ImageIcon("src/main/resources/pieces/white-queen.png"));
+                blackPieces.add(pieces[from.getY()][from.getX()]);
+            }
+
             //TAKING PIECE (EVEN IF ITS BLANK YOU ALWAYS TAKE)
             takePiece(to);//ONLY REMOVES THE LABEL SO ANOTHER LABEL CAN BE ADDED LATER
             //DOESNT CHANGE piece[][]
@@ -565,6 +588,10 @@ public class Pieces{
             }
             //TURN ADD
             turn++;
+            wholeVision();
+            //System.out.println("UPDATING KINGS");
+            blackKING.updateMoves();
+            whiteKING.updateMoves();
             //WHOSE TURN IT IS
             if(turn%2==0){
                 updateWhiteValidMoves();
@@ -576,6 +603,7 @@ public class Pieces{
                     System.out.println("ITS A DRAW");
                 }
                 System.out.println("WHITE TURN!");
+                System.out.println(whiteValidMoves.size());
             }else{
                 updateBlackValidMoves();
                 if(blackValidMoves.isEmpty()){
@@ -586,12 +614,11 @@ public class Pieces{
                     System.out.println("ITS A DRAW");
                 }
                 System.out.println("BLACK TURN!");
+                System.out.println(blackValidMoves.size());
             }
         }
-        wholeVision();
-        //System.out.println("UPDATING KINGS");
-        blackKING.updateMoves();
-        whiteKING.updateMoves();
+
+
         //System.out.println("____________ENDING OF MOVE FUNCTION______________");
     }
     //---------------------------------------Move piece -------------------------------------------
@@ -1378,6 +1405,14 @@ public class Pieces{
 
     //-----------------------------------Move for Kings----------------------------------
     public boolean forKings(coords from,coords to){
+        if(pieces[from.getY()][from.getX()].getNumber()==1 && blackVision.contains(to)){
+            //System.out.println("forKings on vision at "+to.getY()+","+to.getX());
+            return false;//CANT MOVE THERE
+        }
+        if(pieces[from.getY()][from.getX()].getNumber()==0 && whiteVision.contains(to)){
+            //System.out.println("forKings on vision at "+to.getY()+","+to.getX());
+            return false;//CANT MOVE THERE
+        }
         if(!pieces[from.getY()][from.getX()].isMoved()){
             if(from.getY()==to.getY() && to.getX()==from.getX()+2){
                 if(pieces[from.getY()][from.getX()+3].isMoved()){
@@ -1423,14 +1458,7 @@ public class Pieces{
         }
         //from is WHITE KING AND TO COORDS ARE IN ENEMY VISION
         //System.out.println("forKings "+to.getY()+","+to.getX());
-        if(pieces[from.getY()][from.getX()].getNumber()==1 && blackVision.contains(to)){
-            //System.out.println("forKings on vision at "+to.getY()+","+to.getX());
-            return false;//CANT MOVE THERE
-        }
-        if(pieces[from.getY()][from.getX()].getNumber()==0 && whiteVision.contains(to)){
-            //System.out.println("forKings on vision at "+to.getY()+","+to.getX());
-            return false;//CANT MOVE THERE
-        }
+
         //if(to.getY()>7||to.getY()<0)return false;
         //if(to.getX()>7||to.getX()<0)return false;
         //FOR TOP LEFT MOVEMENT---------------------
