@@ -1,6 +1,5 @@
 package com.demoing.clientStuff;
 
-import com.demoing.MyLobby;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
