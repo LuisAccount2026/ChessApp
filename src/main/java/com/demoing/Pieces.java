@@ -45,8 +45,8 @@ public class Pieces{
     private static final String BlackPawn = "BlackPawn";
     private static final String none = "none";
 
-    private int white=1;
-    private int black=0;
+    private final int white=1;
+    private final int black=0;
     //--------------------------------------set pieces ----------------------------------------
     Pieces(){
     }
@@ -278,16 +278,16 @@ public class Pieces{
     }
 
     //---------------------------------------Move piece -------------------------------------------
-    public void moving(coords from,coords to){
+    public boolean moving(coords from,coords to){
         //BLANK PIECE JUST RETURNS
-        if(pieces[from.getY()][from.getX()].getNumber()==-1)return;
+        if(pieces[from.getY()][from.getX()].getNumber()==-1)return false;
         //SELECTED BLACK and then BLACK AND SELECTED WHITE and then WHITE
-        if(pieces[from.getY()][from.getX()].getNumber()==pieces[to.getY()][to.getX()].getNumber())return;
+        if(pieces[from.getY()][from.getX()].getNumber()==pieces[to.getY()][to.getX()].getNumber())return false;
 
         //turn 0 and black pieces = return
-        if(turn%2==0&&pieces[from.getY()][from.getX()].getNumber()==0)return;
+        if(turn%2==0&&pieces[from.getY()][from.getX()].getNumber()==0)return false;
         //turn 1 and white pieces = return
-        if(turn%2!=0&&pieces[from.getY()][from.getX()].getNumber()==1)return;
+        if(turn%2!=0&&pieces[from.getY()][from.getX()].getNumber()==1)return false;
 
 
         //CHECK IF TO COORDS ARE IN validMoves ArrayList<coords>
@@ -502,27 +502,28 @@ public class Pieces{
                 if(whiteValidMoves.isEmpty()){
                     if(whiteCheck){
                         System.out.println("CHECKMATE BLACK WINS");
-                        return;
+                        return false;
                     }
                     System.out.println("ITS A DRAW");
                 }
-                System.out.println("WHITE TURN!");
-                System.out.println(whiteValidMoves.size());
+                //System.out.println("WHITE TURN!");
+                //System.out.println(whiteValidMoves.size());
             }else{
                 updateBlackValidMoves();
                 if(blackValidMoves.isEmpty()){
                     if(blackCheck){
                         System.out.println("CHECKMATE WHITE WINS");
-                        return;
+                        return false;
                     }
                     System.out.println("ITS A DRAW");
                 }
-                System.out.println("BLACK TURN!");
-                System.out.println(blackValidMoves.size());
+                //System.out.println("BLACK TURN!");
+                //System.out.println(blackValidMoves.size());
             }
+
+            return true;
         }
-
-
+        return false;
         //System.out.println("____________ENDING OF MOVE FUNCTION______________");
     }
     //---------------------------------------Move piece -------------------------------------------

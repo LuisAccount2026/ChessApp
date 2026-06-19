@@ -1,6 +1,7 @@
 package com.demoing;
 
 import com.demoing.clientStuff.Client;
+import com.demoing.clientStuff.MyMenu;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -9,12 +10,12 @@ import java.awt.GridLayout;
 
 public class MyFrame extends JFrame{
     private final Panel[][] board= new Panel[8][8];	//[8][8] for all the Panel objects[y][x]
-
+    private MyMenu menu;
     Pieces pieces;			    //LINK TO pieces class
     coords selectedCord;		//SELECTED CORD
     Panel selected;		//SELECTED Panel
     JPanel grid = new JPanel(new GridLayout(8,8));	//[8][8] grid for all the Panel objects
-
+    private int player=-1;
     //----------------------------------MyFrame for WHITE/BLACK POV---------------------------
     public MyFrame(int white){
         //BUILDER FOR LOCAL
@@ -67,45 +68,98 @@ public class MyFrame extends JFrame{
     }
     //----------------------------------MyFrame for WHITE/BLACK POV--------------------------
 
+    public void setPlayer(int player, MyMenu menu){
+        this.player=player;
+        this.menu=menu;
+    }
     //---------------------------------PANEL SELECTED HANDLER--------------------------------
     public void panelSelected(int y, int x){
-        System.out.println("PANELSELECTED["+y+","+x+"]");
-        System.out.println(pieces.getPiece(y,x).getName());
-        if(selected==board[y][x]){
-            pieces.clearValidCircles(selectedCord.getY(), selectedCord.getX());
-            selected.revert();
-            clearSelected();
-            return;
-        }
+        if(player==-1){
+            if(selected==board[y][x]){
+                pieces.clearValidCircles(selectedCord.getY(), selectedCord.getX());
+                selected.revert();
+                clearSelected();
+                return;
+            }
 
-        if(selected!=null){
-            pieces.clearValidCircles(selectedCord.getY(), selectedCord.getX());
-            if(pieces.pieceTurn(y,x)){
-                pieces.addValidCircles(y,x);
+            if(selected!=null){
+                pieces.clearValidCircles(selectedCord.getY(), selectedCord.getX());
+                if(pieces.pieceTurn(y,x)){
+                    pieces.addValidCircles(y,x);
+                }
+                //SELECTED PANEL REVERT TO NORMAL COLOR
+                selected.revert();
+                pieces.moving(selectedCord,pieces.getLocation(y,x));
+                //SELECTED UPDATE TO NEW SELECTED
+                selected=board[y][x];
+                //PRESELECTED UPDATE WITH NEW CORD
+                selectedCord = pieces.getLocation(y,x);
+                //SELECTED CHANGE TO HIGHLIGHTED
+                selected.highlight();
+            }else{
+                if(pieces.pieceTurn(y,x)){
+                    pieces.addValidCircles(y,x);
+                }
+                //SELECTED UPDATE TO NEW SELECTED
+                selected=board[y][x];
+                //PRESELECTED UPDATE WITH NEW CORD
+                selectedCord = pieces.getLocation(y,x);
+                //SELECTED CHANGE TO HIGHLIGHTED
+                selected.highlight();
             }
-            //SELECTED PANEL REVERT TO NORMAL COLOR
-            selected.revert();
-            pieces.moving(selectedCord,pieces.getLocation(y,x));
-            //SELECTED UPDATE TO NEW SELECTED
-            selected=board[y][x];
-            //PRESELECTED UPDATE WITH NEW CORD
-            selectedCord = pieces.getLocation(y,x);
-            //SELECTED CHANGE TO HIGHLIGHTED
-            selected.highlight();
         }else{
-            if(pieces.pieceTurn(y,x)){
-                pieces.addValidCircles(y,x);
+            if(selected==board[y][x]){
+                pieces.clearValidCircles(selectedCord.getY(), selectedCord.getX());
+                selected.revert();
+                clearSelected();
+                return;
             }
-            //SELECTED UPDATE TO NEW SELECTED
-            selected=board[y][x];
-            //PRESELECTED UPDATE WITH NEW CORD
-            selectedCord = pieces.getLocation(y,x);
-            //SELECTED CHANGE TO HIGHLIGHTED
-            selected.highlight();
+            if(selected!=null){
+                pieces.clearValidCircles(selectedCord.getY(), selectedCord.getX());
+                if(pieces.pieceTurn(y,x) && pieces.getPiece(y,x).getNumber()==player){
+                    //System.out.println("piece color:"+player);
+                    pieces.addValidCircles(y,x);
+                }
+                //SELECTED PANEL REVERT TO NORMAL COLOR
+                selected.revert();
+                if(pieces.getPiece(selectedCord.getY(),selectedCord.getX()).getNumber()==player) {
+                    //REACHED MOVING PIECE SO SEND MOVE TO OTHER SIDE
+
+                    if(pieces.moving(selectedCord, pieces.getLocation(y, x))){
+                        //transform y x from  and y x to into string
+                        String fromY = String.valueOf(selectedCord.getY());
+                        String fromX = String.valueOf(selectedCord.getX());
+                        String toY = String.valueOf(y);
+                        String toX = String.valueOf(x);
+                        menu.sendMove(fromY+fromX+toY+toX);
+                    }
+                }
+                //SELECTED UPDATE TO NEW SELECTED
+                selected=board[y][x];
+                //PRESELECTED UPDATE WITH NEW CORD
+                selectedCord = pieces.getLocation(y,x);
+                //SELECTED CHANGE TO HIGHLIGHTED
+                selected.highlight();
+            }else{
+                if(pieces.pieceTurn(y,x)&& pieces.getPiece(y,x).getNumber()==player){
+                    pieces.addValidCircles(y,x);
+                }
+                //SELECTED UPDATE TO NEW SELECTED
+                selected=board[y][x];
+                //PRESELECTED UPDATE WITH NEW CORD
+                selectedCord = pieces.getLocation(y,x);
+                //SELECTED CHANGE TO HIGHLIGHTED
+                selected.highlight();
+            }
         }
     }
     //---------------------------------PANEL SELECTED HANDLER---------------------------------
 
+    public void receivedMove(int fromY, int fromX, int toY, int toX){
+        //System.out.println("from["+fromY+","+fromX+"]");
+        //System.out.println("to["+toY+","+toX+"]");
+        pieces.moving(pieces.getLocation(fromY,fromX), pieces.getLocation(toY, toX));
+    }
     //---------------------------------HIGHLIGHT PANEL----------------------------------------
     public void highlightPanel(int y,int x){
         board[y][x].highlight();

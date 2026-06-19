@@ -21,6 +21,7 @@ public class MyMenu extends JFrame implements ActionListener{
     private boolean join=false;
 
     private Client client;
+    private MyFrame frame;
     //TEXTFIELD TRY
     JTextField textField;
     //TRY
@@ -68,7 +69,7 @@ public class MyMenu extends JFrame implements ActionListener{
             this.setVisible(false);
         }
         if(e.getSource()==hostButton){
-            System.out.println("HOSTING");
+            //System.out.println("HOSTING");
             try {
                 textField.setEnabled(false);
                 hostButton.setVisible(false);
@@ -81,7 +82,7 @@ public class MyMenu extends JFrame implements ActionListener{
             }
         }
         if(e.getSource()==joinButton){
-            System.out.println("JOINING with: "+textField.getText());
+            //System.out.println("JOINING with: "+textField.getText());
             try {
                 client = new Client("JOIN:"+textField.getText(),this);
                 this.join=true;
@@ -99,14 +100,26 @@ public class MyMenu extends JFrame implements ActionListener{
     }
     public void startGame(){
         if(host){
-            System.out.println("STARTED GAME AS HOST");
+            //System.out.println("STARTED GAME AS HOST");
             this.setVisible(false);
             //initialise myframe to start the game but how
-            new MyFrame(1);
+            frame =new MyFrame(1);
+            frame.setPlayer(1,this);
         }else if(join){
-            System.out.println("STARTED GAME AS JOINED");
+            //System.out.println("STARTED GAME AS JOINED");
             this.setVisible(false);
-            new MyFrame(0);
+            frame = new MyFrame(0);
+            frame.setPlayer(0,this);
         }
+    }
+    public void sendMove(String message){
+        client.sendMessage("MOVE:"+message);
+    }
+    public void receivedMove(String message){
+        int fromY = Integer.parseInt(message.substring(0,1));
+        int fromX = Integer.parseInt(message.substring(1,2));
+        int toY = Integer.parseInt(message.substring(2,3));
+        int toX = Integer.parseInt(message.substring(3,4));
+        frame.receivedMove(fromY,fromX,toY,toX);
     }
 }

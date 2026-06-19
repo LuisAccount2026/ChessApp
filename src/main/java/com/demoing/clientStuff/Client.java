@@ -10,36 +10,41 @@ import java.util.Objects;
 public class Client {
     private final static String url = "wss://deployment-demo-i37o.onrender.com/ws";
     private MyMenu menu;
+    private WebSocketClient client;
     public Client(String input, MyMenu menu) throws Exception{
         this.menu=menu;
-        WebSocketClient client = new WebSocketClient(new URI(url)) {
+        client = new WebSocketClient(new URI(url)) {
 
             @Override
             public void onOpen(ServerHandshake handshakedata) {
-                System.out.println("Connected");
+                //System.out.println("Connected");
                 send(input);
-                System.out.println("SENT:"+input);
+                //System.out.println("SENT:"+input);
             }
 
             @Override
             public void onMessage(String message) {
                 if(Objects.equals(message,"Not your turn")){
-                    System.out.println("NotYOURturn___________");
+                    //System.out.println("NotYOURturn___________");
                     return;
                 }else if(Objects.equals(message,"Wait for your turn")){
-                    System.out.println("NotYOURturn___________");
+                    //System.out.println("NotYOURturn___________");
                     return;
                 }
-                System.out.println("OnMessage:"+message);
+                //System.out.println("OnMessage:"+message);
                 if(message.startsWith("CODE:")){
                     String code = message.substring(5);
                     menu.hostConnect(code);
                 }
                 if(Objects.equals(message, "Paired!")){
-                    System.out.println("GAME START");
+                    //System.out.println("GAME START");
                     menu.startGame();
                 }
-
+                if(message.startsWith("MOVE:")){
+                    String move = message.substring(5);
+                    //System.out.println(move);
+                    menu.receivedMove(move);
+                }
             }
 
             @Override
@@ -53,5 +58,9 @@ public class Client {
             }
         };
         client.connect();
+    }
+
+    public void sendMessage(String message){
+        client.send(message);
     }
 }
