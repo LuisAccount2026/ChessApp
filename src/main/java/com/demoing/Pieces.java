@@ -62,36 +62,36 @@ public class Pieces{
             for(int j=0;j<8;j++){
                 //FOR WHITE ROOKS----------------------------------------WHITE PIECES
                 if(i==0&&(j==0||j==7)){
-                    locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],WhiteRook,white,new ImageIcon("src/main/resources/pieces/white-rook.png"));
+                    locations[i][j]= new coords(i,j);                               //"src/main/resources/pieces/white-rook.png"
+                    pieces[i][j]= new piece(this,locations[i][j],WhiteRook,white,new ImageIcon(getClass().getResource("/pieces/white-rook.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     whitePieces.add(pieces[i][j]);
                 }
                 //FOR WHITE KNIGHTS
                 if(i==0&&(j==1||j==6)){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],WhiteKnight,white,new ImageIcon("src/main/resources/pieces/white-knight.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],WhiteKnight,white,new ImageIcon(getClass().getResource("/pieces/white-knight.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     whitePieces.add(pieces[i][j]);
                 }
                 //FOR WHITE BISHOPS
                 if(i==0&&(j==2||j==5)){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],WhiteBishop,white,new ImageIcon("src/main/resources/pieces/white-bishop.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],WhiteBishop,white,new ImageIcon(getClass().getResource("/pieces/white-bishop.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     whitePieces.add(pieces[i][j]);
                 }
                 //FOR WHITE Queen
                 if(i==0&&j==3){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],WhiteQueen,white,new ImageIcon("src/main/resources/pieces/white-queen.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],WhiteQueen,white,new ImageIcon(getClass().getResource("/pieces/white-queen.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     whitePieces.add(pieces[i][j]);
                 }
                 //FOR WHITE King
                 if(i==0&&j==4){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],WhiteKing,white,new ImageIcon("src/main/resources/pieces/white-king.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],WhiteKing,white,new ImageIcon(getClass().getResource("/pieces/white-king.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     whiteKING=pieces[i][j];
                     whitePieces.add(pieces[i][j]);
@@ -99,42 +99,42 @@ public class Pieces{
                 //FOR WHITE Pawns
                 if(i==1){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],WhitePawn,white,new ImageIcon("src/main/resources/pieces/white-pawn.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],WhitePawn,white,new ImageIcon(getClass().getResource("/pieces/white-pawn.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     whitePieces.add(pieces[i][j]);
                 }
                 //FOR BLACK ROOKS--------------------------------------------BLACK PIECES
                 if(i==7&&(j==0||j==7)){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],BlackRook,black,new ImageIcon("src/main/resources/pieces/black-rook.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],BlackRook,black,new ImageIcon(getClass().getResource("/pieces/black-rook.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     blackPieces.add(pieces[i][j]);
                 }
                 //FOR BLACK KNIGHTS
                 if(i==7&&(j==1||j==6)){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],BlackKnight,black,new ImageIcon("src/main/resources/pieces/black-knight.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],BlackKnight,black,new ImageIcon(getClass().getResource("/pieces/black-knight.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     blackPieces.add(pieces[i][j]);
                 }
                 //FOR BLACK BISHOPS
                 if(i==7&&(j==2||j==5)){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],BlackBishop,black,new ImageIcon("src/main/resources/pieces/black-bishop.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],BlackBishop,black,new ImageIcon(getClass().getResource("/pieces/black-bishop.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     blackPieces.add(pieces[i][j]);
                 }
                 //FOR BLACK Queen
                 if(i==7&&j==3){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],BlackQueen,black,new ImageIcon("src/main/resources/pieces/black-queen.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],BlackQueen,black,new ImageIcon(getClass().getResource("/pieces/black-queen.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     blackPieces.add(pieces[i][j]);
                 }
                 //FOR BLACK King
                 if(i==7&&j==4){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],BlackKing,black,new ImageIcon("src/main/resources/pieces/black-king.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],BlackKing,black,new ImageIcon(getClass().getResource("/pieces/black-king.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     blackKING=pieces[i][j];
                     blackPieces.add(pieces[i][j]);
@@ -142,7 +142,7 @@ public class Pieces{
                 //FOR BLACK Pawns
                 if(i==6){
                     locations[i][j]= new coords(i,j);
-                    pieces[i][j]= new piece(this,locations[i][j],BlackPawn,black,new ImageIcon("src/main/resources/pieces/black-pawn.png"));
+                    pieces[i][j]= new piece(this,locations[i][j],BlackPawn,black,new ImageIcon(getClass().getResource("/pieces/black-pawn.png")));
                     board.addPieceToBoard(pieces[i][j].getLabel(),i,j);
                     blackPieces.add(pieces[i][j]);
                 }
@@ -154,7 +154,7 @@ public class Pieces{
                 }
                 //FOR CIRCLES
                 circles[i][j]=new JLabel();
-                circles[i][j].setIcon(new ImageIcon("src/main/resources/pieces/circle.png"));
+                circles[i][j].setIcon(new ImageIcon("/pieces/circle.png"));
                 circles[i][j].setVerticalAlignment(JLabel.CENTER);
                 circles[i][j].setHorizontalAlignment(JLabel.CENTER);
             }
@@ -425,14 +425,14 @@ public class Pieces{
                 //reached last square so promote
                 whitePieces.remove(pieces[from.getY()][from.getX()]);
                 board.removePieceFromBoard(pieces[from.getY()][from.getX()].getLabel(),from.getY(),from.getX());
-                pieces[from.getY()][from.getX()]=new piece(this,locations[from.getY()][from.getX()],WhiteQueen,number,new ImageIcon("src/main/resources/pieces/white-queen.png"));
+                pieces[from.getY()][from.getX()]=new piece(this,locations[from.getY()][from.getX()],WhiteQueen,number,new ImageIcon(getClass().getResource("/pieces/white-queen.png")));
                 whitePieces.add(pieces[from.getY()][from.getX()]);
             }else if(Objects.equals(pieces[from.getY()][from.getX()].getName(), BlackPawn) && to.getY()==0){
                 int number = pieces[from.getY()][from.getX()].getNumber();
                 //reached last square so promote
                 blackPieces.remove(pieces[from.getY()][from.getX()]);
                 board.removePieceFromBoard(pieces[from.getY()][from.getX()].getLabel(),from.getY(),from.getX());
-                pieces[from.getY()][from.getX()]=new piece(this,locations[from.getY()][from.getX()],BlackQueen,number,new ImageIcon("src/main/resources/pieces/black-queen.png"));
+                pieces[from.getY()][from.getX()]=new piece(this,locations[from.getY()][from.getX()],BlackQueen,number,new ImageIcon(getClass().getResource("/pieces/black-queen.png")));
                 blackPieces.add(pieces[from.getY()][from.getX()]);
             }
 
